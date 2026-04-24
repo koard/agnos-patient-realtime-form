@@ -170,62 +170,23 @@ The default session is `demo`. Multiple patient/staff pairs can run simultaneous
 
 ---
 
-## Deployment Instructions
+## Deployment
 
-### Vercel (recommended)
+This project is optimized for zero-config deployment on **Vercel**.
 
-```bash
-npm install -g vercel
-vercel
-```
+1. Push your repository to GitHub.
+2. Import the project in the Vercel dashboard.
+3. Add the `NEXT_PUBLIC_ABLY_API_KEY` environment variable.
+4. Deploy.
 
-Set environment variable in Vercel dashboard:
-- `NEXT_PUBLIC_ABLY_API_KEY` → your Ably API key
+*(Alternatively, you can deploy via CLI using `npx vercel`)*
 
-### Netlify
-
-```bash
-npm install -g netlify-cli
-netlify deploy --prod --dir=.next
-```
-
-Set `NEXT_PUBLIC_ABLY_API_KEY` in Netlify environment settings.
 
 ---
 
-## Design Decisions
+## Bonus Features Implemented
 
-| Decision | Rationale |
-|---|---|
-| **Ably** for real-time | No persistent WebSocket server needed. Works seamlessly on Vercel/Netlify serverless. Free tier is sufficient for demo/assignment. |
-| **Realtime abstraction** (`IRealtimeClient`) | UI components import only the interface. Swapping to Pusher/Supabase/Socket.io only requires replacing `realtimeClient.ts`. |
-| **Debounce 300ms** | Balances responsiveness (staff sees near-instant updates) with efficiency (avoids flooding on every keystroke). |
-| **Session ID via query param** | Allows multiple isolated demo sessions without a database. Easy to test. |
-| **React Hook Form + Zod** | RHF for performant uncontrolled inputs; Zod for co-located, type-safe validation separated from UI. |
-| **`usePatientForm` hook** | All form logic (watch, debounce, publish, submit, reset) in one hook. `PatientForm.tsx` is purely presentational. |
-| **Singleton client** | `getRealtimeClient()` returns a singleton to avoid duplicate Ably connections across React re-renders and hot-reloads. |
-| **`NEXT_PUBLIC_` API key** | Acceptable for front-end assignment. Production would use Ably Token Authentication. |
-
----
-
-## Trade-offs & Known Limitations
-
-- **No persistence:** Data is not stored in a database. If both browser tabs are closed, state is lost. A future version would persist to Supabase or similar.
-- **API key in client bundle:** Acceptable for demo; production should use token auth.
-- **Single staff viewer:** The current design assumes one staff member per session. Multiple staff tabs work fine (all subscribe to the same channel), but there is no staff authentication.
-- **No message history:** Ably does not replay past messages by default. If staff opens the dashboard after the patient has already started, they will see no data until the patient types again. This can be solved with Ably's [rewind](https://ably.com/docs/channels#channel-rewind) feature in production.
-
----
-
-## Future Improvements
-
-- [ ] Ably Token Authentication for secure production deployment
-- [ ] Database persistence (Supabase / PlanetScale) for session history
-- [ ] Message rewind so staff can see data even if they connect late
-- [ ] Staff authentication / login
-- [ ] Multi-patient session management on staff dashboard
-- [ ] Print-friendly patient summary
-- [ ] Internationalisation (i18n) for form labels
-- [ ] Dark mode
-- [ ] Unit tests for validation schema and hooks
-- [ ] E2E tests (Playwright) for form submit → staff view update flow
+- **Session Isolation:** Supports multiple concurrent demonstrations via the ?sessionId= query parameter.
+- **Copy Summary:** One-click copy of the patient's data on the Staff Dashboard.
+- **Typing Indicator:** Real-time visual cue showing exactly which field the patient is currently editing.
+- **Connection Resilience:** UI gracefully handles and displays offline/reconnecting states if the real-time connection drops.
