@@ -4,27 +4,17 @@
 
 ## Live Demo
 
-> **TODO:** Replace with deployed URL once deployed to Vercel/Netlify.
-
 | View | URL |
 |---|---|
-| Landing | `https://your-deployment.vercel.app/` |
-| Patient Form | `https://your-deployment.vercel.app/patient?sessionId=demo` |
-| Staff Dashboard | `https://your-deployment.vercel.app/staff?sessionId=demo` |
+| Landing | `https://agnos-patient-realtime-form.vercel.app/` |
+| Patient Form | `https://agnos-patient-realtime-form.vercel.app/patient?sessionId=demo` |
+| Staff Dashboard | `https://agnos-patient-realtime-form.vercel.app/staff?sessionId=demo` |
 
 ## Screenshots
 
 Open both views side-by-side for the full demo experience:
 
-```
-Patient Form (/patient)          Staff Dashboard (/staff)
-┌─────────────────────┐          ┌─────────────────────┐
-│ Personal Info  [1]  │  ──────▶ │ Live Patient Data   │
-│ Contact Info   [2]  │          │ ● Patient is typing  │
-│ Additional     [3]  │          │ First Name: John     │
-│ Emergency      [4]  │          │ Last Name:  Smith    │
-└─────────────────────┘          └─────────────────────┘
-```
+![Agnos](./public/screenshots/Agnos.png)
 
 ---
 
